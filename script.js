@@ -58,7 +58,7 @@ function draw() {
     ctx.fill();
 
     // Draw the score
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#9c0000";
     ctx.font = "20px Arial";
     ctx.fillText("Score: " + score, 10, 25); // Adjust the position as needed
 }
