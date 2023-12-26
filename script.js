@@ -7,17 +7,15 @@ let food = { x: 15, y: 15 };
 let direction = "right";
 let gameRunning = true;
 let score = 0; // Initialize the score
-let highScore = localStorage.getItem('snakeHighScore') || 0; // Retrieve high score from localStorage
+const highScoreKey = 'snakeHighScore';
+let highScore = localStorage.getItem(highScoreKey) || 0;
 
 // High Score Modal
 const highScoreModal = document.getElementById("highScoreModal");
 const highScoreDisplay = document.getElementById("highScoreDisplay");
-const currentScoreDisplay = document.getElementById("currentScoreDisplay");
 
-function showHighScoreModal() {
-    currentScoreDisplay.innerText = 'Your Score: ' + score;
-    highScoreDisplay.innerText = 'High Score: ' + highScore;
-    highScoreModal.style.display = 'block';
+function displayHighScore() {
+    highScoreDisplay.innerText = "High Score: " + highScore;
 }
 
 function closeHighScoreModal() {
@@ -30,18 +28,73 @@ function restartGame() {
     gameLoop();
 }
 
-// Function to end the game and display the appropriate modal
-function endGame() {
-    gameRunning = false;
-    showHighScoreModal();
+function updateHighScore() {
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem(highScoreKey, highScore);
+        displayHighScore();
+    }
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00F";
+    snake.forEach(segment => {
+        ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
+    });
+
+    ctx.fillStyle = "#F00";
+    const foodSize = gridSize / 2;
+    ctx.beginPath();
+    ctx.arc((food.x + 0.5) * gridSize, (food.y + 0.5) * gridSize, foodSize, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Draw the score
+    ctx.fillStyle = "#000";
+    ctx.font = "20px Arial";
+    ctx.fillText("Score: " + score, 10, 25); // Adjust the position as needed
+}
+
+function gameLoop() {
+    if (gameRunning) {
+        update();
+        draw();
+        setTimeout(gameLoop, 150); // Increase the time delay to slow down the snake
+    }
+}
+
+function showModal() {
+    highScoreModal.style.display = 'block';
+}
+
+function resetGame() {
+    snake = [{ x: 10, y: 10 }];
+    direction = "right";
+    gameRunning = true;
+    score = 0; // Reset the score
+    spawnFood();
+}
+
+function handleKeyPress(event) {
+    switch (event.key) {
+        case "ArrowUp": direction = "up"; break;
+        case "ArrowDown": direction = "down"; break;
+        case "ArrowLeft": direction = "left"; break;
+        case "ArrowRight": direction = "right"; break;
+        case "w": direction = "up"; break;
+        case "s": direction = "down"; break;
+        case "a": direction = "left"; break;
+        case "d": direction = "right"; break;
+    }
 }
 
 function update() {
     const head = { ...snake[0] };
     switch (direction) {
-        case "up":    head.y--; break;
-        case "down":  head.y++; break;
-        case "left":  head.x--; break;
+        case "up": head.y--; break;
+        case "down": head.y++; break;
+        case "left": head.x--; break;
         case "right": head.x++; break;
     }
 
@@ -59,7 +112,9 @@ function update() {
         head.y < 0 || head.y >= canvas.height / gridSize ||
         isSnakeCollision()
     ) {
-        endGame();
+        gameRunning = false;
+        showModal(); // Show the modal when the game ends
+        updateHighScore(); // Update high score when the game ends
     }
 }
 
@@ -75,56 +130,11 @@ function spawnFood() {
     };
 }
 
-function resetGame() {
-    snake = [{ x: 10, y: 10 }];
-    direction = "right";
-    gameRunning = true;
-    score = 0; // Reset the score
-    spawnFood();
-}
-
-function handleKeyPress(event) {
-    switch (event.key) {
-        case "ArrowUp":    direction = "up";    break;
-        case "ArrowDown":  direction = "down";  break;
-        case "ArrowLeft":  direction = "left";  break;
-        case "ArrowRight": direction = "right"; break;
-
-        case "w":    direction = "up";    break;
-        case "s":  direction = "down";  break;
-        case "a":  direction = "left";  break;
-        case "d": direction = "right"; break;
-
-    }
-}
-
+// Event listeners
 window.addEventListener("keydown", handleKeyPress);
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+// Initial display of high score when the page loads
+displayHighScore();
 
-    ctx.fillStyle = "#00F";
-    snake.forEach(segment => {
-        ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
-    });
-
-    ctx.fillStyle = "#F00";
-    const foodSize = gridSize / 2;
-    ctx.beginPath();
-    ctx.arc((food.x + 0.5) * gridSize, (food.y + 0.5) * gridSize, foodSize, 0, 2 * Math.PI);
-    ctx.fill();
-
-    ctx.fillStyle = "#000";
-    ctx.font = "20px Arial";
-    ctx.fillText("Score: " + score, 10, 25);
-}
-
-function gameLoop() {
-    if (gameRunning) {
-        update();
-        draw();
-        setTimeout(gameLoop, 150); // Increase the time delay to slow down the snake
-    }
-}
-
+// Start the game loop
 gameLoop();
