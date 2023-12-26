@@ -39,7 +39,7 @@ function updateHighScore() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#008300";
+    ctx.fillStyle = "#FF0000";
     snake.forEach((segment, index) => {
         if (index === 0) { // Snake head
             const headSize = gridSize / 2;
