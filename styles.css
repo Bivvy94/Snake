@@ -9,7 +9,7 @@ body {
 }
 
 canvas {
-    border: 2px solid #11E000;
+    border: 8px solid #0c9c00;
     background-color: #CACACA;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -28,7 +28,7 @@ canvas {
 }
 
 .modal-content {
-    background-color: #fff;
+    background-color: #f4f5d5;
     padding: 20px;
     text-align: center;
     border-radius: 10px;
