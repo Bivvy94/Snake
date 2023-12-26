@@ -51,7 +51,7 @@ function draw() {
         }
     });
 
-    ctx.fillStyle = "#cf0000";
+    ctx.fillStyle = "#008300";
     const foodSize = gridSize / 2;
     ctx.beginPath();
     ctx.arc((food.x + 0.5) * gridSize, (food.y + 0.5) * gridSize, foodSize, 0, 2 * Math.PI);
