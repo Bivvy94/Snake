@@ -39,6 +39,7 @@ function updateHighScore() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Change the snake color to a different color, for example, "#FF0000" (red)
     ctx.fillStyle = "#FF0000";
     snake.forEach((segment, index) => {
         if (index === 0) { // Snake head
@@ -51,6 +52,7 @@ function draw() {
         }
     });
 
+    // Keep the food color as is
     ctx.fillStyle = "#008300";
     const foodSize = gridSize / 2;
     ctx.beginPath();
@@ -58,7 +60,7 @@ function draw() {
     ctx.fill();
 
     // Draw the score
-    ctx.fillStyle = "#9c0000";
+    ctx.fillStyle = "#000";
     ctx.font = "20px Arial";
     ctx.fillText("Score: " + score, 10, 25); // Adjust the position as needed
 }
