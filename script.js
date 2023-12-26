@@ -39,12 +39,12 @@ function updateHighScore() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#00F";
+    ctx.fillStyle = "#cf0000";
     snake.forEach(segment => {
         ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
     });
 
-    ctx.fillStyle = "#F00";
+    ctx.fillStyle = "#cf0000";
     const foodSize = gridSize / 2;
     ctx.beginPath();
     ctx.arc((food.x + 0.5) * gridSize, (food.y + 0.5) * gridSize, foodSize, 0, 2 * Math.PI);
@@ -124,10 +124,19 @@ function isSnakeCollision() {
 }
 
 function spawnFood() {
-    food = {
-        x: Math.floor(Math.random() * (canvas.width / gridSize)),
-        y: Math.floor(Math.random() * (canvas.height / gridSize))
-    };
+    let newFood;
+    do {
+        newFood = {
+            x: Math.floor(Math.random() * (canvas.width / gridSize)),
+            y: Math.floor(Math.random() * (canvas.height / gridSize))
+        };
+    } while (isFoodOnSnake(newFood));
+
+    food = newFood;
+}
+
+function isFoodOnSnake(newFood) {
+    return snake.some(segment => segment.x === newFood.x && segment.y === newFood.y);
 }
 
 // Event listeners
