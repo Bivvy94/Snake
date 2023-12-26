@@ -40,8 +40,15 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "#cf0000";
-    snake.forEach(segment => {
-        ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
+    snake.forEach((segment, index) => {
+        if (index === 0) { // Snake head
+            const headSize = gridSize / 2;
+            ctx.beginPath();
+            ctx.arc((segment.x + 0.5) * gridSize, (segment.y + 0.5) * gridSize, headSize, 0, 2 * Math.PI);
+            ctx.fill();
+        } else { // Snake body
+            ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
+        }
     });
 
     ctx.fillStyle = "#cf0000";
