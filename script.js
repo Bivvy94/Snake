@@ -40,7 +40,7 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Change the snake color to a different color, for example, "#FF0000" (red)
-    ctx.fillStyle = "#FF0000";
+    ctx.fillStyle = "#008300";
     snake.forEach((segment, index) => {
         if (index === 0) { // Snake head
             const headSize = gridSize / 2;
@@ -53,7 +53,7 @@ function draw() {
     });
 
     // Keep the food color as is
-    ctx.fillStyle = "#008300";
+    ctx.fillStyle = "#FF0000";
     const foodSize = gridSize / 2;
     ctx.beginPath();
     ctx.arc((food.x + 0.5) * gridSize, (food.y + 0.5) * gridSize, foodSize, 0, 2 * Math.PI);
